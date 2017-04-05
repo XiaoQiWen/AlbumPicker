@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/album_recycler_bgcolor"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/album_bgcolor">
+
+        <ImageButton
+            android:id="@+id/btn_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:src="@drawable/photo_ic_back" />
+
+        <TextView
+            android:id="@+id/text_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/btn_back"
+            android:text="0/0"
+            android:textColor="@color/album_textcolor"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/album_selector_btn"
+            android:gravity="center"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:text="确定"
+            android:enabled="false"
+            android:textColor="@color/album_btn_textcolor_e" />
+    </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:layout_weight="1"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/album_bgcolor"
+        android:paddingRight="10dp"
+        >
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="选择"
+            android:textSize="14sp"
+            android:textColor="@color/album_textcolor"
+            />
+        <View
+            android:id="@+id/viewClicked"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@id/checkbox"
+            />
+    </RelativeLayout>
+</LinearLayout>

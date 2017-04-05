@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="album_bgcolor">#212121</color>
+    <color name="album_recycler_bgcolor">#282828</color>
+    <color name="album_textcolor">#FAFAFA</color>
+    <color name="album_btn_textcolor">#FAFAFA</color>
+    <color name="album_btn_textcolor_e">#797979</color>
+    <color name="album_btn_bgcolor_e">#CCFF90</color>
+    <color name="album_btn_bgcolor_n">#69F0AE</color>
+    <color name="album_btn_bgcolor_p">#1DE9B6</color>
+    <color name="album_recyclerdir_bg">#e9f1ef</color>
+</resources>

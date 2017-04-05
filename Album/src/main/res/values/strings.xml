@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PhotoPicker</string>
+    <string name="__picker_all_image">所有图片</string>
+    <string name="all_images">所有图片</string>
+</resources>
