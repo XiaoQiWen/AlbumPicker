@@ -52,7 +52,7 @@ public class DirAdapter extends RecyclerView.Adapter<DirAdapter.DirHolder> {
         if (imageLoader != null) {
             imageLoader.displayImage(mContext.getActivity(), holder.imgDir, directory.coverPicture.path, directory.coverPicture.width, directory.coverPicture.height);
         } else {
-            Glide.with(mContext).load(directory.coverPicture.path).error(R.drawable.photo_ic_dir_bg).centerCrop().into(holder.imgDir);
+            Glide.with(mContext).load(directory.coverPicture.path).asBitmap().centerCrop().into(holder.imgDir);
         }
     }
 
