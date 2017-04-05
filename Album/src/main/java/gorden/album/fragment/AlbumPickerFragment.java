@@ -25,8 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import gorden.album.AlbumPicker;
@@ -50,6 +48,7 @@ import static gorden.album.AlbumPicker.EXTRA_SELECT_MODE;
 import static gorden.album.AlbumPicker.EXTRA_SHOW_CAMERA;
 import static gorden.album.AlbumPicker.EXTRA_SHOW_GIF;
 import static gorden.album.AlbumPicker.KEY_IMAGES;
+import static gorden.album.AlbumPicker.REQUEST_CAMERA;
 import static gorden.album.AlbumPicker.mCurrentPhotoPath;
 
 /**
@@ -61,7 +60,6 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
     public static final int SINGLE_SELECT_MODE = 701;
     public static final int MULTI_SELECT_MODE = 702;
 
-    public static final int REQUEST_CAMERA = 10234;
 
     public final static int DEFAULT_MAX_COUNT = 9;//最大选择数量
     public final static int DEFAULT_COLUMN_NUMBER = 3;//相册列宽

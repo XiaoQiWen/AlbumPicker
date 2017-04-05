@@ -48,7 +48,7 @@ public class DirAdapter extends RecyclerView.Adapter<DirAdapter.DirHolder> {
         holder.viewSelected.setVisibility(lastSelected == position ? View.VISIBLE : View.GONE);
         PictureDirectory directory = directoryList.get(position);
         holder.textDir.setText(directory.dirName);
-        holder.textCount.setText(directory.pictures.size() + "张");
+        holder.textCount.setText(String.valueOf(directory.pictures.size()).concat(" 张"));
         if (imageLoader != null) {
             imageLoader.displayImage(mContext.getActivity(), holder.imgDir, directory.coverPicture.path, directory.coverPicture.width, directory.coverPicture.height);
         } else {

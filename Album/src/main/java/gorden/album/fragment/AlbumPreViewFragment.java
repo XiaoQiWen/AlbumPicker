@@ -6,23 +6,19 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.TextView;
-
-import com.bm.library.Info;
-import com.bm.library.PhotoView;
 
 import java.util.ArrayList;
 
 import gorden.album.AlbumPickerActivity;
 import gorden.album.R;
 import gorden.album.adapter.ImagePagerAdapter;
+import gorden.album.widget.ZoomOutPageTransformer;
 
 import static android.app.Activity.RESULT_OK;
 import static gorden.album.AlbumPicker.EXTRA_MAX_COUNT;
@@ -57,6 +53,7 @@ public class AlbumPreViewFragment extends Fragment {
             text_position = (TextView) rootView.findViewById(R.id.text_position);
             checkbox = (CheckBox) rootView.findViewById(R.id.checkbox);
             viewClicked = rootView.findViewById(R.id.viewClicked);
+
         }
         return rootView;
     }
@@ -69,12 +66,13 @@ public class AlbumPreViewFragment extends Fragment {
         int position = getArguments().getInt("position", 0);
         pickerMaxCount = getArguments().getInt(EXTRA_MAX_COUNT);
         pager_image.setOffscreenPageLimit(2);
+        pager_image.setPageTransformer(false,new ZoomOutPageTransformer());
         pagerAdapter = new ImagePagerAdapter(getContext(), imgList);
         pager_image.setAdapter(pagerAdapter);
 
         pager_image.setCurrentItem(position);
         currentPosition = position;
-        text_position.setText((position+1) + "/" + imgList.size());
+        text_position.setText((position + 1) + "/" + imgList.size());
         refreshConfirm();
         checkbox.setChecked(selectPath.contains(imgList.get(position)));
 
@@ -87,7 +85,7 @@ public class AlbumPreViewFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 currentPosition = position;
-                text_position.setText((position+1) + "/" + imgList.size());
+                text_position.setText((position + 1) + "/" + imgList.size());
                 checkbox.setChecked(selectPath.contains(imgList.get(position)));
             }
 
@@ -104,12 +102,12 @@ public class AlbumPreViewFragment extends Fragment {
                 if (isChecked && selectPath.size() >= pickerMaxCount) return;
                 checkbox.setChecked(isChecked);
 
-                if (isChecked && !selectPath.contains(imgList.get(currentPosition))){
+                if (isChecked && !selectPath.contains(imgList.get(currentPosition))) {
                     selectPath.add(imgList.get(currentPosition));
-                }else if (!isChecked&&selectPath.contains(imgList.get(currentPosition))){
+                } else if (!isChecked && selectPath.contains(imgList.get(currentPosition))) {
                     selectPath.remove(imgList.get(currentPosition));
                 }
-                ((AlbumPickerActivity)getActivity()).refreshSelected(selectPath);
+                ((AlbumPickerActivity) getActivity()).refreshSelected(selectPath);
                 refreshConfirm();
             }
         });

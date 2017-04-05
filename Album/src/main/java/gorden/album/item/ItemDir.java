@@ -66,8 +66,9 @@ public class ItemDir extends LinearLayout{
         textLayout.addView(textCount);
 
         viewSelected = new ImageView(context);
-        viewSelected.setBackgroundColor(Color.BLUE);
-        LayoutParams paramsSelected = new LayoutParams(50,50);
+        viewSelected.setBackgroundResource(R.drawable.album_check);
+        LayoutParams paramsSelected = new LayoutParams(dip2px(20,context),dip2px(20,context));
+        paramsSelected.rightMargin = 20;
         paramsSelected.gravity= Gravity.CENTER_VERTICAL;
         addView(viewSelected,paramsSelected);
         viewSelected.setVisibility(GONE);

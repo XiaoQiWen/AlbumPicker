@@ -17,11 +17,10 @@ import java.util.Arrays;
 import gorden.album.AlbumPicker;
 import gorden.album.demo.util.XLog;
 import gorden.album.demo.widget.BottomMenuDialog;
-import gorden.album.demo.widget.BottomSheetDialog;
 
 import static gorden.album.AlbumPicker.KEY_IMAGES;
+import static gorden.album.AlbumPicker.REQUEST_CAMERA;
 import static gorden.album.AlbumPicker.REQUEST_CODE;
-import static gorden.album.fragment.AlbumPickerFragment.REQUEST_CAMERA;
 
 public class MainActivity extends AppCompatActivity {
     RecyclerView recyclerView;

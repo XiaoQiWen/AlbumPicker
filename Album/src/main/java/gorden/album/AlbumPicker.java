@@ -3,7 +3,6 @@ package gorden.album;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,8 +11,6 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -27,7 +24,6 @@ import java.util.Locale;
 import gorden.album.fragment.AlbumPickerFragment;
 import gorden.album.loader.ImageLoader;
 import gorden.album.utils.PermissionsUtils;
-import gorden.album.utils.SingleMediaScanner;
 
 /**
  * 默认单选模式、显示gif 每排3张图 显示相机
@@ -36,6 +32,8 @@ import gorden.album.utils.SingleMediaScanner;
 @SuppressWarnings({"unused","WeakerAccess"})
 public class AlbumPicker {
     public static final int REQUEST_CODE = 10233;
+    public static final int REQUEST_CAMERA = 10234;
+
     public static final String KEY_IMAGES = "KEY_IMAGES";
 
     public final static String EXTRA_SELECT_MODE = "EXTRA_SELECT_MODE"; //选择模式、单选 多选
@@ -138,7 +136,7 @@ public class AlbumPicker {
          * @param pathArray 图片地址
          */
         public AlbumPickerBuilder selectedPaths(String[] pathArray) {
-            return selectedPaths(new ArrayList<String>(Arrays.asList(pathArray)));
+            return selectedPaths(new ArrayList<>(Arrays.asList(pathArray)));
         }
 
         public AlbumPickerBuilder selectedPaths(ArrayList<String> pathList) {
@@ -171,7 +169,7 @@ public class AlbumPicker {
             if (PermissionsUtils.checkCameraPermission(activity)){
                 try {
                     Intent intent = dispatchTakePictureIntent(activity);
-                    activity.startActivityForResult(intent,AlbumPickerFragment.REQUEST_CAMERA);
+                    activity.startActivityForResult(intent,REQUEST_CAMERA);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -183,7 +181,7 @@ public class AlbumPicker {
             if (PermissionsUtils.checkCameraPermission(fragment)){
                 try {
                     Intent intent = dispatchTakePictureIntent(fragment.getContext());
-                    fragment.startActivityForResult(intent,AlbumPickerFragment.REQUEST_CAMERA);
+                    fragment.startActivityForResult(intent,REQUEST_CAMERA);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

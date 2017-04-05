@@ -5,13 +5,12 @@ import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bm.library.PhotoView;
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import gorden.album.ImageType;
+import gorden.album.R;
+import me.xiaopan.sketch.SketchImageView;
+import me.xiaopan.sketch.display.TransitionImageDisplayer;
+import me.xiaopan.sketch.state.StateImage;
 
 /**
  * Created by Gorden on 2017/4/4.
@@ -28,14 +27,12 @@ public class ImagePagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        PhotoView imageView = new PhotoView(mContext);
-        imageView.enable();
+        SketchImageView imageView = new SketchImageView(mContext);
+        imageView.setSupportZoom(true);
+        imageView.setSupportLargeImage(true);
+        imageView.getOptions().setDecodeGifImage(true);
+        imageView.displayImage(imgList.get(position));
         container.addView(imageView);
-        if (ImageType.getType(imgList.get(position)) == ImageType.GIF) {
-            Glide.with(mContext).load(imgList.get(position)).asGif().into(imageView);
-        } else {
-            Glide.with(mContext).load(imgList.get(position)).asBitmap().into(imageView);
-        }
         return imageView;
     }
 

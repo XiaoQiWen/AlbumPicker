@@ -5,11 +5,16 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 
 import java.util.ArrayList;
 
 import gorden.album.fragment.AlbumPickerFragment;
 import gorden.album.fragment.AlbumPreViewFragment;
+import me.xiaopan.sketch.Configuration;
+import me.xiaopan.sketch.Sketch;
+import me.xiaopan.sketch.cache.LruDiskCache;
+import me.xiaopan.sketch.cache.LruMemoryCache;
 
 import static gorden.album.AlbumPicker.EXTRA_MAX_COUNT;
 import static gorden.album.AlbumPicker.EXTRA_SELECT_MODE;
@@ -35,6 +40,9 @@ public class AlbumPickerActivity extends AppCompatActivity {
         pickerFragment.setArguments(getIntent().getExtras());
         fragmentManager = getSupportFragmentManager();
         pickerView();
+
+        int newMemoryCacheMaxSize = (int) (Runtime.getRuntime().maxMemory() / 5);
+        Sketch.with(this).getConfiguration().setMemoryCache(new LruMemoryCache(this,newMemoryCacheMaxSize));
     }
 
     private void pickerView() {
@@ -60,5 +68,15 @@ public class AlbumPickerActivity extends AppCompatActivity {
             pickerFragment.selectPath = selectPath;
             pickerFragment.notifySelected();
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        try {
+            return super.dispatchTouchEvent(ev);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }
