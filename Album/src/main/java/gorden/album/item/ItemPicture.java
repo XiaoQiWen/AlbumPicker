@@ -1,7 +1,6 @@
 package gorden.album.item;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.view.Gravity;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 
 import gorden.album.R;
 import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.decode.ImageFormat;
 import me.xiaopan.sketch.display.TransitionImageDisplayer;
 
 /**
@@ -33,10 +31,11 @@ public class ItemPicture extends FrameLayout{
         imgPicture = new SketchImageView(context);
         imgPicture.setShowGifFlag(R.drawable.ic_gif);
         imgPicture.getOptions().setImageDisplayer(new TransitionImageDisplayer())
-                  .setMaxSize(imgSize,imgSize).setResize(imgSize,imgSize).setLowQualityImage(true)
+                  .setLoadingImage(R.drawable.album_image_loading).setErrorImage(R.drawable.album_image_error)
+                  .setShapeSizeByFixedSize(true).setLowQualityImage(true).setResizeByFixedSize(true)
                   .setThumbnailMode(true).setCacheProcessedImageInDisk(true);
-        imgPicture.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        addView(imgPicture,LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+        imgPicture.setShowPressedStatus(true);
+        addView(imgPicture,imgSize,imgSize);
 
         viewShadow = new View(context);
         viewShadow.setBackgroundColor(Color.parseColor("#88000000"));

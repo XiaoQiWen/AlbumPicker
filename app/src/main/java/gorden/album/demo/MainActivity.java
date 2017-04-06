@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
     }
 
-    public void showBottomMenu(View view){
+    public void showBottomMenu(final View view){
         new BottomMenuDialog.BottomMenuBuilder().addItem("拍照", new View.OnClickListener() {
             @Override
             public void onClick(View v) {

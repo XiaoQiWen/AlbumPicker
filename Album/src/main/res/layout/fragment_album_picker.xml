@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fitsSystemWindows="true"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/album_bgcolor">
+        android:layout_height="50dp">
 
         <ImageButton
             android:id="@+id/btn_back"
@@ -36,11 +33,11 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:background="@drawable/album_selector_btn"
+            android:enabled="false"
             android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="确定"
-            android:enabled="false"
             android:textColor="@color/album_btn_textcolor_e" />
     </RelativeLayout>
 
@@ -48,51 +45,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_album"
             android:layout_width="match_parent"
-            android:background="@color/album_recycler_bgcolor"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
+
         <View
             android:id="@+id/view_shadow"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:alpha="0"
-            android:background="#000000"
-            />
+            android:background="#000000" />
+
         <FrameLayout
             android:id="@+id/behaviorView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:behavior_hideable="true"
-            app:layout_behavior="@string/bottom_sheet_behavior"
-            >
+            app:layout_behavior="@string/bottom_sheet_behavior">
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_dir"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="bottom"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
                 android:background="@color/album_recyclerdir_bg"
-                android:layout_height="wrap_content"/>
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp" />
         </FrameLayout>
     </android.support.design.widget.CoordinatorLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/album_bgcolor">
+        android:layout_height="50dp">
 
         <TextView
             android:id="@+id/textDirName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="15dp"
-            android:minWidth="100dp"
-            android:text="所有图片"
-            android:drawablePadding="5dp"
             android:drawableLeft="@drawable/photo_ic_directory_tab"
+            android:drawablePadding="5dp"
+            android:gravity="center_vertical"
+            android:minWidth="100dp"
+            android:paddingLeft="15dp"
+            android:text="所有图片"
             android:textColor="@color/album_textcolor"
             android:textSize="16sp" />
 

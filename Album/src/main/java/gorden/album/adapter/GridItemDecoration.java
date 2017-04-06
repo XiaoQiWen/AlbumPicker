@@ -11,21 +11,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 public class GridItemDecoration extends RecyclerView.ItemDecoration {
-    private Drawable mDivider;
 
     private int dividerWidth = 3;
-
-    public GridItemDecoration() {
-        mDivider = new ColorDrawable(Color.parseColor("#282828"));
-    }
-
-    @Override
-    public void onDraw(Canvas c, RecyclerView parent, RecyclerView.State state) {
-
-        drawHorizontal(c, parent);
-        drawVertical(c, parent);
-
-    }
 
     private int getSpanCount(RecyclerView parent) {
         // 列数
@@ -39,39 +26,6 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
                     .getSpanCount();
         }
         return spanCount;
-    }
-
-    public void drawHorizontal(Canvas c, RecyclerView parent) {
-        int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int left = child.getLeft() - params.leftMargin;
-            final int right = child.getRight() + params.rightMargin
-                    + dividerWidth;
-            final int top = child.getBottom() + params.bottomMargin;
-            final int bottom = top + dividerWidth;
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
-        }
-    }
-
-    public void drawVertical(Canvas c, RecyclerView parent) {
-        final int childCount = parent.getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View child = parent.getChildAt(i);
-
-            final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
-                    .getLayoutParams();
-            final int top = child.getTop() - params.topMargin;
-            final int bottom = child.getBottom() + params.bottomMargin;
-            final int left = child.getRight() + params.rightMargin;
-            final int right = left + dividerWidth;
-
-            mDivider.setBounds(left, top, right, bottom);
-            mDivider.draw(c);
-        }
     }
 
     private boolean isLastColum(RecyclerView parent, int pos, int spanCount,

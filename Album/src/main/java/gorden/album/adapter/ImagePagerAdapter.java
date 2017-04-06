@@ -8,20 +8,24 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import gorden.album.R;
+import gorden.album.fragment.AlbumPreViewFragment;
 import me.xiaopan.sketch.SketchImageView;
 import me.xiaopan.sketch.display.TransitionImageDisplayer;
+import me.xiaopan.sketch.feature.zoom.ImageZoomer;
 import me.xiaopan.sketch.state.StateImage;
 
 /**
  * Created by Gorden on 2017/4/4.
  */
 
-public class ImagePagerAdapter extends PagerAdapter {
+public class ImagePagerAdapter extends PagerAdapter implements ImageZoomer.OnViewTapListener {
     private Context mContext;
+    private AlbumPreViewFragment fragment;
     private ArrayList<String> imgList;
 
-    public ImagePagerAdapter(Context context, ArrayList<String> imgList) {
-        this.mContext = context;
+    public ImagePagerAdapter(AlbumPreViewFragment context, ArrayList<String> imgList) {
+        this.fragment = context;
+        this.mContext = context.getContext();
         this.imgList = imgList;
     }
 
@@ -32,6 +36,7 @@ public class ImagePagerAdapter extends PagerAdapter {
         imageView.setSupportLargeImage(true);
         imageView.getOptions().setDecodeGifImage(true);
         imageView.displayImage(imgList.get(position));
+        imageView.getImageZoomer().setOnViewTapListener(this);
         container.addView(imageView);
         return imageView;
     }
@@ -54,5 +59,10 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
+    }
+
+    @Override
+    public void onViewTap(View view, float x, float y) {
+        fragment.toggleToolbarVisibleState();
     }
 }

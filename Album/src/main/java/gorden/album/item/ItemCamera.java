@@ -1,6 +1,7 @@
 package gorden.album.item;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ public class ItemCamera extends LinearLayout{
     private void initView(Context context) {
         setGravity(Gravity.CENTER);
         setOrientation(VERTICAL);
+        setBackgroundColor(Color.parseColor("#66000000"));
         ImageView imageView = new ImageView(context);
         imageView.setImageResource(android.R.drawable.ic_menu_camera);
         addView(imageView,dip2px(40,context),dip2px(40,context));

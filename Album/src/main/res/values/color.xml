@@ -4,9 +4,13 @@
     <color name="album_recycler_bgcolor">#282828</color>
     <color name="album_textcolor">#FAFAFA</color>
     <color name="album_btn_textcolor">#FAFAFA</color>
-    <color name="album_btn_textcolor_e">#797979</color>
+    <color name="album_btn_textcolor_e">#ccc4c4</color>
     <color name="album_btn_bgcolor_e">#CCFF90</color>
     <color name="album_btn_bgcolor_n">#69F0AE</color>
     <color name="album_btn_bgcolor_p">#1DE9B6</color>
     <color name="album_recyclerdir_bg">#e9f1ef</color>
+
+    <color name="window_background_start">#A75509</color>
+    <color name="window_background_center">#371708</color>
+    <color name="window_background_end">#040404</color>
 </resources>

@@ -5,12 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -18,6 +21,7 @@ import java.util.ArrayList;
 import gorden.album.AlbumPickerActivity;
 import gorden.album.R;
 import gorden.album.adapter.ImagePagerAdapter;
+import gorden.album.utils.AnimationUtils;
 import gorden.album.widget.ZoomOutPageTransformer;
 
 import static android.app.Activity.RESULT_OK;
@@ -42,6 +46,9 @@ public class AlbumPreViewFragment extends Fragment {
     private int pickerMaxCount;
     private int currentPosition;
 
+    private boolean show = true;
+    private View rel_bottom,rel_top;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -53,7 +60,8 @@ public class AlbumPreViewFragment extends Fragment {
             text_position = (TextView) rootView.findViewById(R.id.text_position);
             checkbox = (CheckBox) rootView.findViewById(R.id.checkbox);
             viewClicked = rootView.findViewById(R.id.viewClicked);
-
+            rel_top = rootView.findViewById(R.id.rel_top);
+            rel_bottom = rootView.findViewById(R.id.rel_bottom);
         }
         return rootView;
     }
@@ -67,7 +75,7 @@ public class AlbumPreViewFragment extends Fragment {
         pickerMaxCount = getArguments().getInt(EXTRA_MAX_COUNT);
         pager_image.setOffscreenPageLimit(2);
         pager_image.setPageTransformer(false,new ZoomOutPageTransformer());
-        pagerAdapter = new ImagePagerAdapter(getContext(), imgList);
+        pagerAdapter = new ImagePagerAdapter(this, imgList);
         pager_image.setAdapter(pagerAdapter);
 
         pager_image.setCurrentItem(position);
@@ -87,6 +95,7 @@ public class AlbumPreViewFragment extends Fragment {
                 currentPosition = position;
                 text_position.setText((position + 1) + "/" + imgList.size());
                 checkbox.setChecked(selectPath.contains(imgList.get(position)));
+                ((AlbumPickerActivity)getActivity()).applyBackground(imgList.get(position));
             }
 
             @Override
@@ -142,5 +151,16 @@ public class AlbumPreViewFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    public void toggleToolbarVisibleState() {
+        show = !show;
+        if (show) {
+            AnimationUtils.visibleViewByAlpha(rel_top);
+            AnimationUtils.visibleViewByAlpha(rel_bottom);
+        } else {
+            AnimationUtils.goneViewByAlpha(rel_top);
+            AnimationUtils.goneViewByAlpha(rel_bottom);
+        }
     }
 }

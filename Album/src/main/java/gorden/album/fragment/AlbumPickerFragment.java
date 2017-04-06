@@ -185,6 +185,7 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
                 recyclerDir.setAdapter(new DirAdapter(AlbumPickerFragment.this, directories));
 
                 if (directories.size() > 0) {
+                    textDirName.setText(directories.get(0).dirName);
                     loadPicture(directories.get(0).pictures, true);
                 }
             }
@@ -235,6 +236,7 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      * @param pictureList 图片集合
      */
     private void loadPicture(List<Picture> pictureList, boolean showCamera) {
+        ((AlbumPickerActivity)getActivity()).applyBackground(pictureList.get(0).path);
         recyclerAlbum.setAdapter(new PictureAdapter(this, pictureList, showCamera && this.showCamera));
     }
 
