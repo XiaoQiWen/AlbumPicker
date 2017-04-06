@@ -10,7 +10,7 @@
     <color name="album_btn_bgcolor_p">#1DE9B6</color>
     <color name="album_recyclerdir_bg">#e9f1ef</color>
 
-    <color name="window_background_start">#A75509</color>
-    <color name="window_background_center">#371708</color>
+    <color name="window_background_start">#3d3c3b</color>
+    <color name="window_background_center">#232222</color>
     <color name="window_background_end">#040404</color>
 </resources>

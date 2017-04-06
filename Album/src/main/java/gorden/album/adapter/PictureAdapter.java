@@ -18,9 +18,6 @@ import gorden.album.item.ItemCamera;
 import gorden.album.item.ItemPicture;
 import gorden.album.loader.ImageLoader;
 import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.display.FadeInImageDisplayer;
-import me.xiaopan.sketch.display.TransitionImageDisplayer;
-import me.xiaopan.sketch.display.ZoomInImageDisplayer;
 
 import static gorden.album.AlbumPicker.EXTRA_IMAGE_LOADER;
 
@@ -54,7 +51,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureH
             return new PictureHolder(itemView, true);
         } else {
             View itemView = new ItemPicture(parent.getContext(),itemSize);
-            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemSize));
+            itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return new PictureHolder(itemView, false);
         }
     }

@@ -81,6 +81,7 @@ public class AlbumPreViewFragment extends Fragment {
         pager_image.setCurrentItem(position);
         currentPosition = position;
         text_position.setText((position + 1) + "/" + imgList.size());
+        ((AlbumPickerActivity)getActivity()).applyBackground(imgList.get(position));
         refreshConfirm();
         checkbox.setChecked(selectPath.contains(imgList.get(position)));
 

@@ -2,7 +2,7 @@ package gorden.album;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -15,15 +15,15 @@ import java.util.ArrayList;
 
 import gorden.album.fragment.AlbumPickerFragment;
 import gorden.album.fragment.AlbumPreViewFragment;
-import me.xiaopan.sketch.Configuration;
 import me.xiaopan.sketch.Sketch;
 import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.cache.LruDiskCache;
 import me.xiaopan.sketch.cache.LruMemoryCache;
 import me.xiaopan.sketch.display.TransitionImageDisplayer;
+import me.xiaopan.sketch.drawable.SketchDrawable;
 import me.xiaopan.sketch.process.GaussianBlurImageProcessor;
 import me.xiaopan.sketch.state.DrawableStateImage;
 import me.xiaopan.sketch.state.OldStateImage;
+import me.xiaopan.sketch.util.SketchUtils;
 
 import static gorden.album.AlbumPicker.EXTRA_MAX_COUNT;
 import static gorden.album.AlbumPicker.EXTRA_SELECT_MODE;
@@ -31,7 +31,7 @@ import static gorden.album.fragment.AlbumPickerFragment.DEFAULT_MAX_COUNT;
 import static gorden.album.fragment.AlbumPickerFragment.SINGLE_SELECT_MODE;
 
 /**
- * document
+ * Album图片选择器 页面
  * Created by Gordn on 2017/3/31.
  */
 
@@ -57,7 +57,7 @@ public class AlbumPickerActivity extends AppCompatActivity {
         pickerView();
 
         int newMemoryCacheMaxSize = (int) (Runtime.getRuntime().maxMemory() / 5);
-        Sketch.with(this).getConfiguration().setMemoryCache(new LruMemoryCache(this,newMemoryCacheMaxSize));
+        Sketch.with(this).getConfiguration().setMemoryCache(new LruMemoryCache(this, newMemoryCacheMaxSize));
     }
 
     private void initViews() {
@@ -73,11 +73,19 @@ public class AlbumPickerActivity extends AppCompatActivity {
                 .setShapeSizeByFixedSize(true)
                 .setMaxSize(getResources().getDisplayMetrics().widthPixels / 4,
                         getResources().getDisplayMetrics().heightPixels / 4)
-                .setImageDisplayer(new TransitionImageDisplayer(true))
-                .setBitmapPoolDisabled(true);
+                .setImageDisplayer(new TransitionImageDisplayer(true));
     }
 
-    public void applyBackground(String imgPath){
+    /**
+     * 设置模糊背景
+     * @param imgPath 图片地址
+     */
+    public void applyBackground(String imgPath) {
+        Drawable drawable = SketchUtils.getLastDrawable(backgroundImageView.getDrawable());
+        if (drawable instanceof SketchDrawable) {
+            SketchDrawable sketchDrawable = (SketchDrawable) drawable;
+            if (imgPath.contains(sketchDrawable.getUri())) return;//如果地址没变,则不设置
+        }
         backgroundImageView.displayImage(imgPath);
     }
 
@@ -99,8 +107,8 @@ public class AlbumPickerActivity extends AppCompatActivity {
         fragmentTransaction.hide(pickerFragment).add(R.id.frame_content, preViewFragment, "preview").commit();
     }
 
-    public void refreshSelected(ArrayList<String> selectPath){
-        if (pickerFragment!=null){
+    public void refreshSelected(ArrayList<String> selectPath) {
+        if (pickerFragment != null) {
             pickerFragment.selectPath = selectPath;
             pickerFragment.notifySelected();
         }

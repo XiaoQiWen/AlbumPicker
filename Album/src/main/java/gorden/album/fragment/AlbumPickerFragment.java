@@ -84,6 +84,8 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
     public TextView btn_preview;
     private ImageButton btn_back;
 
+    private String backgroundPath;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -236,7 +238,8 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      * @param pictureList 图片集合
      */
     private void loadPicture(List<Picture> pictureList, boolean showCamera) {
-        ((AlbumPickerActivity)getActivity()).applyBackground(pictureList.get(0).path);
+        backgroundPath  =  pictureList.get(0).path;
+        ((AlbumPickerActivity)getActivity()).applyBackground(backgroundPath);
         recyclerAlbum.setAdapter(new PictureAdapter(this, pictureList, showCamera && this.showCamera));
     }
 
@@ -337,6 +340,14 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
             preViewImage();
         } else if (id == R.id.btn_back) {
             getActivity().finish();
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            ((AlbumPickerActivity)getActivity()).applyBackground(backgroundPath);
         }
     }
 }
