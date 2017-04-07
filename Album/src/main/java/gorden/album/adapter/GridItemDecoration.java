@@ -1,18 +1,12 @@
 package gorden.album.adapter;
 
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 public class GridItemDecoration extends RecyclerView.ItemDecoration {
-
-    private int dividerWidth = 3;
 
     private int getSpanCount(RecyclerView parent) {
         // 列数
@@ -88,13 +82,13 @@ public class GridItemDecoration extends RecyclerView.ItemDecoration {
         int childCount = parent.getAdapter().getItemCount();
         if (isLastRaw(parent, parent.getChildAdapterPosition(view), spanCount, childCount))// 如果是最后一行，则不需要绘制底部
         {
-            outRect.set(0, 0, dividerWidth, 0);
+            outRect.set(0, 0, 5, 0);
         } else if (isLastColum(parent, parent.getChildAdapterPosition(view), spanCount, childCount))// 如果是最后一列，则不需要绘制右边
         {
-            outRect.set(0, 0, 0, dividerWidth);
+            outRect.set(0, 0, 0, 5);
         } else {
-            outRect.set(0, 0, dividerWidth,
-                    dividerWidth);
+            outRect.set(0, 0, 5,
+                    5);
         }
     }
 }

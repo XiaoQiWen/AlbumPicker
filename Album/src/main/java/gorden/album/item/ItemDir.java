@@ -4,13 +4,14 @@ import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.view.Gravity;
-import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import gorden.album.R;
+import me.xiaopan.sketch.SketchImageView;
 
 /**
  * document
@@ -18,7 +19,7 @@ import gorden.album.R;
  */
 
 public class ItemDir extends LinearLayout{
-    public ImageView imgDir;
+    public SketchImageView imgDir;
     public TextView textDir;
     public TextView textCount;
     public ImageView viewSelected;
@@ -38,10 +39,12 @@ public class ItemDir extends LinearLayout{
         addView(frameLayout,dip2px(80,context),dip2px(80,context));
         frameLayout.setPadding(0,0,dip2px(5,context),dip2px(5,context));
 
-        imgDir = new ImageView(context);
+        imgDir = new SketchImageView(context);
         imgDir.setBackgroundColor(Color.LTGRAY);
         imgDir.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        LayoutParams paramsDir = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
+        imgDir.getOptions().setThumbnailMode(true).setResize(dip2px(75, context),dip2px(75, context))
+               .setMaxSize(dip2px(150, context),dip2px(150, context)).setCacheProcessedImageInDisk(true);
+        LayoutParams paramsDir = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         frameLayout.addView(imgDir,paramsDir);
 
         LinearLayout textLayout = new LinearLayout(context);

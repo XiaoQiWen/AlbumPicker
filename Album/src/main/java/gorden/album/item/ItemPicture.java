@@ -48,7 +48,7 @@ public class ItemPicture extends FrameLayout {
         imgPicture.setShowGifFlag(R.drawable.ic_gif);
         imgPicture.getOptions().setImageDisplayer(new TransitionImageDisplayer())
                 .setLoadingImage(R.drawable.album_image_loading).setErrorImage(R.drawable.album_image_error)
-                .setShapeSizeByFixedSize(true).setResizeByFixedSize(true)
+                .setResize(imgSize, imgSize).setMaxSize((int) (1.5 * imgSize), (int) (1.5 * imgSize))
                 .setThumbnailMode(true).setCacheProcessedImageInDisk(true);
         imgPicture.setShowPressedStatus(true);
         addView(imgPicture, imgSize, imgSize);
@@ -56,7 +56,7 @@ public class ItemPicture extends FrameLayout {
         viewShadow = new View(context);
         viewShadow.setBackgroundColor(Color.parseColor("#88000000"));
         viewShadow.setVisibility(GONE);
-        addView(viewShadow,imgSize,imgSize);
+        addView(viewShadow, imgSize, imgSize);
 
         imgCheck = new CheckBox(context);
         LayoutParams paramsCheckbox = new LayoutParams(dip2px(29), dip2px(29));

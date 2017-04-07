@@ -26,7 +26,6 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/btn_back"
-            android:text="0/0"
             android:textColor="@color/album_textcolor"
             android:textSize="16sp" />
 
@@ -41,7 +40,7 @@
             android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:text="确定"
+            android:text="@string/album_str_complete"
             android:enabled="false"
             android:textColor="@color/album_btn_textcolor_e" />
     </RelativeLayout>
@@ -60,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:text="选择"
+            android:text="@string/album_str_select"
             android:textSize="14sp"
             android:textColor="@color/album_textcolor"
             />

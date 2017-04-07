@@ -6,17 +6,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.List;
 
-import gorden.album.R;
 import gorden.album.entity.PictureDirectory;
 import gorden.album.fragment.AlbumPickerFragment;
 import gorden.album.item.ItemDir;
-import gorden.album.loader.ImageLoader;
-
-import static gorden.album.AlbumPicker.EXTRA_IMAGE_LOADER;
+import me.xiaopan.sketch.SketchImageView;
 
 /**
  * document
@@ -26,14 +21,12 @@ import static gorden.album.AlbumPicker.EXTRA_IMAGE_LOADER;
 public class DirAdapter extends RecyclerView.Adapter<DirAdapter.DirHolder> {
     private AlbumPickerFragment mContext;
     private List<PictureDirectory> directoryList;
-    private ImageLoader imageLoader;
 
     private int lastSelected = 0;
 
     public DirAdapter(AlbumPickerFragment mContext, List<PictureDirectory> directoryList) {
         this.mContext = mContext;
         this.directoryList = directoryList;
-        imageLoader = (ImageLoader) mContext.getArguments().getSerializable(EXTRA_IMAGE_LOADER);
     }
 
     @Override
@@ -49,11 +42,7 @@ public class DirAdapter extends RecyclerView.Adapter<DirAdapter.DirHolder> {
         PictureDirectory directory = directoryList.get(position);
         holder.textDir.setText(directory.dirName);
         holder.textCount.setText(String.valueOf(directory.pictures.size()).concat(" 张"));
-        if (imageLoader != null) {
-            imageLoader.displayImage(mContext.getActivity(), holder.imgDir, directory.coverPicture.path, directory.coverPicture.width, directory.coverPicture.height);
-        } else {
-            Glide.with(mContext).load(directory.coverPicture.path).asBitmap().centerCrop().into(holder.imgDir);
-        }
+        holder.imgDir.displayImage(directory.coverPicture.path);
     }
 
     @Override
@@ -61,12 +50,13 @@ public class DirAdapter extends RecyclerView.Adapter<DirAdapter.DirHolder> {
         return directoryList.size();
     }
 
-    protected class DirHolder extends RecyclerView.ViewHolder {
-        ImageView imgDir, viewSelected;
+    class DirHolder extends RecyclerView.ViewHolder {
+        ImageView viewSelected;
+        SketchImageView imgDir;
         TextView textDir;
         TextView textCount;
 
-        public DirHolder(View itemView) {
+        DirHolder(View itemView) {
             super(itemView);
             imgDir = ((ItemDir) itemView).imgDir;
             viewSelected = ((ItemDir) itemView).viewSelected;

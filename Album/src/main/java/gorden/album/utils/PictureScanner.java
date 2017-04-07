@@ -2,7 +2,6 @@ package gorden.album.utils;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.MediaStore.Images.Media;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -18,26 +17,29 @@ import gorden.album.R;
 import gorden.album.entity.Picture;
 import gorden.album.entity.PictureDirectory;
 
+import static android.provider.MediaStore.Images.Media.*;
+import static android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+
 /**
- * document
+ * 图片扫描
  * Created by Gordn on 2017/4/1.
  */
 
 public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    public AppCompatActivity mContext;
+    private AppCompatActivity mContext;
     private OnPicturesLoadedListener loadedListener;
     private boolean showGif;
 
     private final String[] IMAGE_PROJECTION = {     //查询图片需要的数据列
-            Media._ID,                              //图片id
-            Media.DISPLAY_NAME,   //图片的显示名称  aaa.jpg
-            Media.DATA,           //图片的真实路径  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
-            Media.SIZE,           //图片的大小，long型  132492
-            Media.WIDTH,          //图片的宽度，int型  1920
-            Media.HEIGHT,         //图片的高度，int型  1080
-            Media.MIME_TYPE,      //图片的类型     image/jpeg
-            Media.DATE_ADDED};    //图片被添加的时间，long型  1450518608
+            _ID,                              //图片id
+            DISPLAY_NAME,   //图片的显示名称  aaa.jpg
+            DATA,           //图片的真实路径  /storage/emulated/0/pp/downloader/wallpaper/aaa.jpg
+            SIZE,           //图片的大小，long型  132492
+            WIDTH,          //图片的宽度，int型  1920
+            HEIGHT,         //图片的高度，int型  1080
+            MIME_TYPE,      //图片的类型     image/jpeg
+            DATE_ADDED};    //图片被添加的时间，long型  1450518608
 
 
     private ArrayList<PictureDirectory> directories = new ArrayList<>();
@@ -62,8 +64,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        CursorLoader cursorLoader = new CursorLoader(mContext, MediaStore.Images.Media.EXTERNAL_CONTENT_URI, IMAGE_PROJECTION,showGif?null:MediaStore.Images.Media.MIME_TYPE + "!=?",showGif?null:new String[]{"image/gif"}, IMAGE_PROJECTION[7] + " DESC");
-        return cursorLoader;
+        return new CursorLoader(mContext, EXTERNAL_CONTENT_URI, IMAGE_PROJECTION,showGif?null: MIME_TYPE + "!=?",showGif?null:new String[]{"image/gif"}, IMAGE_PROJECTION[7] + " DESC");
     }
 
     @Override
@@ -91,7 +92,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
                 picture.mimeType = imageMimeType;
                 picture.width = imageWidth;
                 picture.height = imageHeight;
-                if (!FileUtils.isEffective(picture)) continue;
+                if (!isEffective(picture)) continue;
 
                 allPictures.add(picture);
                 //根据父路径分类存放图片
@@ -115,7 +116,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
             if (data.getCount() > 0 && allPictures.size() > 0) {
                 //构造所有图片的集合
                 PictureDirectory allImagesFolder = new PictureDirectory();
-                allImagesFolder.dirName = mContext.getResources().getString(R.string.all_images);
+                allImagesFolder.dirName = mContext.getResources().getString(R.string.album_str_all_image);
                 allImagesFolder.dirPath = "/";
                 allImagesFolder.coverPicture = allPictures.get(0);
                 allImagesFolder.pictures = allPictures;
@@ -128,6 +129,10 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         Log.e("PictureScanner", "onLoaderReset");
+    }
+
+    private boolean isEffective(Picture picture) {
+        return new File(picture.path).isFile() && picture.size > 0 && picture.width > 0;
     }
 
     /**

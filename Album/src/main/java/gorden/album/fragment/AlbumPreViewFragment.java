@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import gorden.album.AlbumPickerActivity;
 import gorden.album.R;
-import gorden.album.adapter.ImagePagerAdapter;
+import gorden.album.adapter.FragmentPagerAdapter;
 import gorden.album.utils.AnimationUtils;
 import gorden.album.widget.ZoomOutPageTransformer;
 
@@ -40,7 +40,6 @@ public class AlbumPreViewFragment extends Fragment {
     private CheckBox checkbox;
     private View viewClicked;
 
-    private ImagePagerAdapter pagerAdapter;
     private View rootView;
     private ArrayList<String> selectPath = new ArrayList<>();
     private int pickerMaxCount;
@@ -73,10 +72,8 @@ public class AlbumPreViewFragment extends Fragment {
         selectPath.addAll(getArguments().getStringArrayList("selected"));
         int position = getArguments().getInt("position", 0);
         pickerMaxCount = getArguments().getInt(EXTRA_MAX_COUNT);
-        pager_image.setOffscreenPageLimit(2);
         pager_image.setPageTransformer(false,new ZoomOutPageTransformer());
-        pagerAdapter = new ImagePagerAdapter(this, imgList);
-        pager_image.setAdapter(pagerAdapter);
+        pager_image.setAdapter(new FragmentPagerAdapter(getChildFragmentManager(), imgList));
 
         pager_image.setCurrentItem(position);
         currentPosition = position;

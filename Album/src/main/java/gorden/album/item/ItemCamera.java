@@ -11,6 +11,7 @@ import android.widget.TextView;
 import gorden.album.R;
 
 /**
+ * 相机
  * Created by Gorden on 2017/4/2.
  */
 

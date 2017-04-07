@@ -3,8 +3,6 @@ package gorden.album.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import gorden.album.utils.FileUtils;
-
 /**
  * 图片目录
  * Created by Gordn on 2017/4/1.
@@ -24,8 +22,9 @@ public class PictureDirectory {
 
         PictureDirectory that = (PictureDirectory) o;
 
-        if (dirName != null ? !dirName.equals(that.dirName) : that.dirName != null) return false;
-        return dirPath != null ? dirPath.equals(that.dirPath) : that.dirPath == null;
+        return dirName != null ?
+                dirName.equals(that.dirName) : that.dirName == null && (dirPath != null ?
+                dirPath.equals(that.dirPath) : that.dirPath == null);
 
     }
 

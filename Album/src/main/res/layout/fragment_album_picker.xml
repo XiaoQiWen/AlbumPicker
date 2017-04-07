@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/btn_back"
-            android:text="选择图片"
+            android:text="@string/album_str_title"
             android:textColor="@color/album_textcolor"
             android:textSize="16sp" />
 
@@ -37,7 +37,7 @@
             android:gravity="center"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
-            android:text="确定"
+            android:text="@string/album_str_complete"
             android:textColor="@color/album_btn_textcolor_e" />
     </RelativeLayout>
 
@@ -89,7 +89,7 @@
             android:gravity="center_vertical"
             android:minWidth="100dp"
             android:paddingLeft="15dp"
-            android:text="所有图片"
+            android:text="@string/album_str_all_image"
             android:textColor="@color/album_textcolor"
             android:textSize="16sp" />
 
@@ -101,7 +101,7 @@
             android:gravity="center"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="预览"
+            android:text="@string/album_str_preview"
             android:textColor="@color/album_btn_textcolor_e"
             android:textSize="16sp" />
     </RelativeLayout>

@@ -15,9 +15,7 @@ import java.util.ArrayList;
 
 import gorden.album.fragment.AlbumPickerFragment;
 import gorden.album.fragment.AlbumPreViewFragment;
-import me.xiaopan.sketch.Sketch;
 import me.xiaopan.sketch.SketchImageView;
-import me.xiaopan.sketch.cache.LruMemoryCache;
 import me.xiaopan.sketch.display.TransitionImageDisplayer;
 import me.xiaopan.sketch.drawable.SketchDrawable;
 import me.xiaopan.sketch.process.GaussianBlurImageProcessor;
@@ -37,7 +35,6 @@ import static gorden.album.fragment.AlbumPickerFragment.SINGLE_SELECT_MODE;
 
 public class AlbumPickerActivity extends AppCompatActivity {
     private AlbumPickerFragment pickerFragment;
-    private AlbumPreViewFragment preViewFragment;
     private FragmentManager fragmentManager;
 
     private SketchImageView backgroundImageView;
@@ -55,9 +52,6 @@ public class AlbumPickerActivity extends AppCompatActivity {
         pickerFragment.setArguments(getIntent().getExtras());
         fragmentManager = getSupportFragmentManager();
         pickerView();
-
-        int newMemoryCacheMaxSize = (int) (Runtime.getRuntime().maxMemory() / 5);
-        Sketch.with(this).getConfiguration().setMemoryCache(new LruMemoryCache(this, newMemoryCacheMaxSize));
     }
 
     private void initViews() {
@@ -69,7 +63,7 @@ public class AlbumPickerActivity extends AppCompatActivity {
         backgroundImageView.getOptions().setLoadingImage(new OldStateImage(new DrawableStateImage(R.drawable.shape_window_background)))
                 .setImageProcessor(GaussianBlurImageProcessor.makeLayerColor(Color.parseColor("#66000000")))
                 .setCacheProcessedImageInDisk(true)
-                .setBitmapConfig(Bitmap.Config.ARGB_8888)   // 效果比较重要
+                .setBitmapConfig(Bitmap.Config.ARGB_8888)
                 .setShapeSizeByFixedSize(true)
                 .setMaxSize(getResources().getDisplayMetrics().widthPixels / 4,
                         getResources().getDisplayMetrics().heightPixels / 4)
@@ -78,6 +72,7 @@ public class AlbumPickerActivity extends AppCompatActivity {
 
     /**
      * 设置模糊背景
+     *
      * @param imgPath 图片地址
      */
     public void applyBackground(String imgPath) {
@@ -94,7 +89,7 @@ public class AlbumPickerActivity extends AppCompatActivity {
     }
 
     public void preView(ArrayList<String> imglist, ArrayList<String> selected, int position, boolean backStack) {
-        preViewFragment = new AlbumPreViewFragment();
+        AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
         Bundle bundle = new Bundle();
         bundle.putInt("position", position);
         bundle.putStringArrayList("imglist", imglist);

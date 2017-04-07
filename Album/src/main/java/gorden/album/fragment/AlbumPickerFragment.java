@@ -16,7 +16,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SimpleItemAnimator;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -98,7 +97,6 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.e("SSSSSSSSSSSSSSS", "onCreateView" + "       AlbumPickerFragment");
         View rootView = inflater.inflate(R.layout.fragment_album_picker, container, false);
         bindInitView(rootView);
         initDir();
@@ -219,7 +217,7 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         }
     }
 
-    public void notifySelected(){
+    public void notifySelected() {
         refreshConfirm();
         recyclerAlbum.getAdapter().notifyDataSetChanged();
     }
@@ -238,8 +236,8 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      * @param pictureList 图片集合
      */
     private void loadPicture(List<Picture> pictureList, boolean showCamera) {
-        backgroundPath  =  pictureList.get(0).path;
-        ((AlbumPickerActivity)getActivity()).applyBackground(backgroundPath);
+        backgroundPath = pictureList.get(0).path;
+        ((AlbumPickerActivity) getActivity()).applyBackground(backgroundPath);
         recyclerAlbum.setAdapter(new PictureAdapter(this, pictureList, showCamera && this.showCamera));
     }
 
@@ -271,19 +269,19 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      *
      * @param position current position
      */
-    public void preViewImage(List<Picture> pictures,int position) {
+    public void preViewImage(List<Picture> pictures, int position) {
         ArrayList<String> pathList = new ArrayList<String>();
-        for (Picture picture:pictures){
+        for (Picture picture : pictures) {
             pathList.add(picture.path);
         }
-        ((AlbumPickerActivity)getActivity()).preView(pathList,selectPath,position,true);
+        ((AlbumPickerActivity) getActivity()).preView(pathList, selectPath, position, true);
     }
 
     /**
      * 预览图片 当前选择的
      */
     public void preViewImage() {
-        ((AlbumPickerActivity)getActivity()).preView(selectPath,selectPath,0,true);
+        ((AlbumPickerActivity) getActivity()).preView(selectPath, selectPath, 0, true);
     }
 
     public int appWidth() {
@@ -346,8 +344,8 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
-            ((AlbumPickerActivity)getActivity()).applyBackground(backgroundPath);
+        if (!hidden) {
+            ((AlbumPickerActivity) getActivity()).applyBackground(backgroundPath);
         }
     }
 }

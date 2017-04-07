@@ -1,13 +1,9 @@
 package gorden.album.adapter;
 
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.ImageView;
-
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -16,10 +12,7 @@ import gorden.album.entity.Picture;
 import gorden.album.fragment.AlbumPickerFragment;
 import gorden.album.item.ItemCamera;
 import gorden.album.item.ItemPicture;
-import gorden.album.loader.ImageLoader;
 import me.xiaopan.sketch.SketchImageView;
-
-import static gorden.album.AlbumPicker.EXTRA_IMAGE_LOADER;
 
 /**
  * 照片adapter
@@ -29,7 +22,6 @@ import static gorden.album.AlbumPicker.EXTRA_IMAGE_LOADER;
 public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureHolder> {
     private AlbumPickerFragment mContext;
     private List<Picture> pictureList;
-    private ImageLoader imageLoader;
     private boolean showCamera;
     private int TYPE_CAMERA = 1;
 
@@ -38,7 +30,6 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureH
     public PictureAdapter(AlbumPickerFragment mContext, List<Picture> pictureList, boolean showCamera) {
         this.mContext = mContext;
         this.pictureList = pictureList;
-        imageLoader = (ImageLoader) mContext.getArguments().getSerializable(EXTRA_IMAGE_LOADER);
         this.showCamera = showCamera;
         itemSize = mContext.appWidth() / mContext.pickerGridColumn;
     }
@@ -50,7 +41,7 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureH
             itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, itemSize));
             return new PictureHolder(itemView, true);
         } else {
-            View itemView = new ItemPicture(parent.getContext(),itemSize);
+            View itemView = new ItemPicture(parent.getContext(), itemSize);
             itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             return new PictureHolder(itemView, false);
         }
@@ -62,11 +53,6 @@ public class PictureAdapter extends RecyclerView.Adapter<PictureAdapter.PictureH
         position -= showCamera ? 1 : 0;
         Picture picture = pictureList.get(position);
         holder.imgPicture.displayImage(picture.path);
-//        if (imageLoader == null) {
-//            Glide.with(mContext).load(picture.path).asBitmap().override(itemSize, itemSize).centerCrop().into(holder.imgPicture);
-//        } else {
-//            imageLoader.displayImage(mContext.getActivity(), holder.imgPicture, picture.path, picture.width, picture.height);
-//        }
         holder.imgCheck.setChecked(mContext.selectPath.contains(pictureList.get(position).path));
         holder.viewShadow.setVisibility(holder.imgCheck.isChecked() ? View.VISIBLE : View.GONE);
 

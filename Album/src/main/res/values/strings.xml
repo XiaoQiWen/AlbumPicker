@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">PhotoPicker</string>
-    <string name="__picker_all_image">所有图片</string>
-    <string name="all_images">所有图片</string>
+    <string name="album_str_all_image">所有图片</string>
+    <string name="album_str_preview">预览</string>
+    <string name="album_str_select">选择</string>
+    <string name="album_str_title">选择图片</string>
+    <string name="album_str_complete">完成</string>
+    <string name="album_str_camera">拍摄照片</string>
 </resources>

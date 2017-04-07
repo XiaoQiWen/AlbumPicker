@@ -22,7 +22,6 @@ import java.util.Date;
 import java.util.Locale;
 
 import gorden.album.fragment.AlbumPickerFragment;
-import gorden.album.loader.ImageLoader;
 import gorden.album.utils.PermissionsUtils;
 
 /**
@@ -43,8 +42,6 @@ public class AlbumPicker {
     public final static String EXTRA_GRID_COLUMN = "GRID_COLUMN";//每排显示多少张图
     public final static String EXTRA_SELECTED_PATH = "SELECTED_PATH";//已选择图片的地址
     public final static String EXTRA_PREVIEW_ENABLED = "PREVIEW_ENABLED";//是否可以预览
-
-    public final static String EXTRA_IMAGE_LOADER = "EXTRA_IMAGE_LOADER";//图片加载器
 
     public static String mCurrentPhotoPath = null;
 
@@ -149,12 +146,6 @@ public class AlbumPicker {
          */
         public AlbumPickerBuilder previewEnabled(boolean previewEnabled) {
             optionsBundle.putBoolean(EXTRA_PREVIEW_ENABLED, previewEnabled);
-            return this;
-        }
-
-
-        public AlbumPickerBuilder setImageLoader(ImageLoader imageLoader){
-            optionsBundle.putSerializable(EXTRA_IMAGE_LOADER,imageLoader);
             return this;
         }
 
