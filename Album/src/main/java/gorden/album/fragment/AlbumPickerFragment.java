@@ -37,6 +37,7 @@ import gorden.album.entity.PictureDirectory;
 import gorden.album.utils.PermissionsConstant;
 import gorden.album.utils.PictureScanner;
 import gorden.album.utils.SingleMediaScanner;
+import me.xiaopan.sketch.util.SketchUtils;
 
 import static android.app.Activity.RESULT_OK;
 import static gorden.album.AlbumPicker.EXTRA_GRID_COLUMN;
@@ -65,6 +66,7 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
 
     public int pickerMaxCount = DEFAULT_MAX_COUNT;//多选模式下选择数量
     public int pickerGridColumn = DEFAULT_COLUMN_NUMBER;//列宽
+    public int pickerModel = SINGLE_SELECT_MODE;
 
     private boolean showGif = true;//默认显示Gif
     private boolean showCamera = true;//默认显示相机
@@ -81,14 +83,13 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
 
     public TextView btn_confirm;
     public TextView btn_preview;
-    private ImageButton btn_back;
 
     private String backgroundPath;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /**
+        /*
          * 初始化配置参数
          */
         receiveParameters();
@@ -138,7 +139,7 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
 
         btn_confirm = (TextView) rootView.findViewById(R.id.btn_confirm);
         btn_preview = (TextView) rootView.findViewById(R.id.btn_preview);
-        btn_back = (ImageButton) rootView.findViewById(R.id.btn_back);
+        ImageButton btn_back = (ImageButton) rootView.findViewById(R.id.btn_back);
 
         view_shadow.setOnClickListener(this);
         view_shadow.setClickable(false);
@@ -147,6 +148,11 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         textDirName.setOnClickListener(this);
         btn_back.setOnClickListener(this);
 
+        if (!previewEnabled) btn_preview.setVisibility(View.GONE);
+        if (pickerModel == SINGLE_SELECT_MODE){
+            btn_confirm.setVisibility(View.GONE);
+            btn_preview.setVisibility(View.GONE);
+        }
         refreshConfirm();
     }
 
@@ -158,8 +164,7 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         showCamera = parameterIntent.getBoolean(EXTRA_SHOW_CAMERA, true);
         showGif = parameterIntent.getBoolean(EXTRA_SHOW_GIF, true);
         previewEnabled = parameterIntent.getBoolean(EXTRA_PREVIEW_ENABLED, true);
-
-        int pickerModel = parameterIntent.getInt(EXTRA_SELECT_MODE, SINGLE_SELECT_MODE);
+        pickerModel = parameterIntent.getInt(EXTRA_SELECT_MODE, SINGLE_SELECT_MODE);
         pickerMaxCount = parameterIntent.getInt(EXTRA_MAX_COUNT, pickerModel == SINGLE_SELECT_MODE ? 1 : DEFAULT_MAX_COUNT);
         pickerGridColumn = parameterIntent.getInt(EXTRA_GRID_COLUMN, DEFAULT_COLUMN_NUMBER);
 
@@ -187,6 +192,8 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
                 if (directories.size() > 0) {
                     textDirName.setText(directories.get(0).dirName);
                     loadPicture(directories.get(0).pictures, true);
+                }else{
+                    recyclerAlbum.setAdapter(new PictureAdapter(AlbumPickerFragment.this, null, showCamera));
                 }
             }
         }, showGif);
@@ -197,12 +204,13 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      * 计算dir高度
      */
     private void calculateDirHeight(int count) {
-        if (dip2px(100) * count > appHeight() / 3 * 2) {
+        int itemHeight = SketchUtils.dp2px(getActivity(), 100);
+        if (itemHeight * count > appHeight() / 3 * 2) {
             recyclerDir.getLayoutParams().height = appHeight() / 3 * 2;
             dirBehavior.setPeekHeight(appHeight() / 3 * 2);
             recyclerDir.requestLayout();
         } else {
-            dirBehavior.setPeekHeight(dip2px(100 * count));
+            dirBehavior.setPeekHeight(itemHeight * count);
         }
     }
 
@@ -245,7 +253,8 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      * 刷新完成按钮
      */
     public void refreshConfirm() {
-        btn_confirm.setText(selectPath.size() > 0 && pickerMaxCount > 1 ? "完成(" + selectPath.size() + "/" + pickerMaxCount + ")" : "完成");
+        btn_confirm.setText(selectPath.size() > 0 && pickerMaxCount > 1 ?
+                String.format(getString(R.string.album_str_complete), "(" + selectPath.size() + "/" + pickerMaxCount + ")") : String.format(getString(R.string.album_str_complete), ""));
         btn_confirm.setEnabled(selectPath.size() > 0);
         btn_confirm.setTextColor(ContextCompat.getColor(getContext(), (selectPath.size() > 0 ? R.color.album_btn_textcolor : R.color.album_btn_textcolor_e)));
 
@@ -270,18 +279,18 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
      * @param position current position
      */
     public void preViewImage(List<Picture> pictures, int position) {
-        ArrayList<String> pathList = new ArrayList<String>();
+        ArrayList<String> pathList = new ArrayList<>();
         for (Picture picture : pictures) {
             pathList.add(picture.path);
         }
-        ((AlbumPickerActivity) getActivity()).preView(pathList, selectPath, position, true);
+        ((AlbumPickerActivity) getActivity()).preViewAlbum(pathList, selectPath, position, true);
     }
 
     /**
      * 预览图片 当前选择的
      */
     public void preViewImage() {
-        ((AlbumPickerActivity) getActivity()).preView(selectPath, selectPath, 0, true);
+        ((AlbumPickerActivity) getActivity()).preViewAlbum(selectPath, selectPath, 0, true);
     }
 
     public int appWidth() {
@@ -295,10 +304,6 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         getActivity().getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
 
         return rect.height();
-    }
-
-    private int dip2px(int dip) {
-        return (int) (dip * getResources().getDisplayMetrics().density + 0.5f);
     }
 
     @Override
@@ -316,15 +321,13 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == PermissionsConstant.REQUEST_CAMERA) {
             for (String permission : permissions) {
-                if (ContextCompat.checkSelfPermission(getContext(), permission) == PackageManager.PERMISSION_GRANTED)
-                    continue;
-                else {
-                    Toast.makeText(getContext(), "拍摄照片需要相机权限", Toast.LENGTH_SHORT).show();
+                if (ContextCompat.checkSelfPermission(getContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(getContext(), R.string.album_str_camera_hint, Toast.LENGTH_SHORT).show();
                     return;
                 }
             }
-            AlbumPicker.builder().openCamera(this);
         }
+        AlbumPicker.builder().openCamera(this);
     }
 
     @Override
@@ -341,6 +344,9 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         }
     }
 
+    /**
+     * 刷新背景
+     */
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);

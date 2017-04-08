@@ -38,7 +38,7 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:text="@string/album_str_complete"
-            android:textColor="@color/album_btn_textcolor_e" />
+            android:textColor="@color/album_selector_text_color" />
     </RelativeLayout>
 
     <android.support.design.widget.CoordinatorLayout
@@ -102,7 +102,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="@string/album_str_preview"
-            android:textColor="@color/album_btn_textcolor_e"
+            android:textColor="@color/album_selector_text_color"
             android:textSize="16sp" />
     </RelativeLayout>
 </LinearLayout>

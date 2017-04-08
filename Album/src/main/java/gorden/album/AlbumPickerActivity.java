@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -24,9 +25,18 @@ import me.xiaopan.sketch.state.OldStateImage;
 import me.xiaopan.sketch.util.SketchUtils;
 
 import static gorden.album.AlbumPicker.EXTRA_MAX_COUNT;
+import static gorden.album.AlbumPicker.EXTRA_PREVIEW_LIST;
+import static gorden.album.AlbumPicker.EXTRA_PREVIEW_MODE;
+import static gorden.album.AlbumPicker.EXTRA_PREVIEW_POSITION;
 import static gorden.album.AlbumPicker.EXTRA_SELECT_MODE;
 import static gorden.album.fragment.AlbumPickerFragment.DEFAULT_MAX_COUNT;
 import static gorden.album.fragment.AlbumPickerFragment.SINGLE_SELECT_MODE;
+import static gorden.album.fragment.AlbumPreViewFragment.KEY_PREVIEW_IMAGELIST;
+import static gorden.album.fragment.AlbumPreViewFragment.KEY_PREVIEW_POSITION;
+import static gorden.album.fragment.AlbumPreViewFragment.KEY_PREVIEW_SELECTED;
+import static gorden.album.fragment.AlbumPreViewFragment.MODE_ALBUM_DELETE;
+import static gorden.album.fragment.AlbumPreViewFragment.MODE_ALBUM_PREVIEW;
+import static gorden.album.fragment.AlbumPreViewFragment.MODE_ONLY_PREVIEW;
 
 /**
  * Album图片选择器 页面
@@ -48,10 +58,23 @@ public class AlbumPickerActivity extends AppCompatActivity {
 
         initViews();
 
-        pickerFragment = new AlbumPickerFragment();
-        pickerFragment.setArguments(getIntent().getExtras());
         fragmentManager = getSupportFragmentManager();
-        pickerView();
+
+        int previewMode = getIntent().getIntExtra(EXTRA_PREVIEW_MODE,MODE_ALBUM_PREVIEW);
+
+        switch (previewMode){
+            case MODE_ALBUM_PREVIEW://相册
+                pickerFragment = new AlbumPickerFragment();
+                pickerFragment.setArguments(getIntent().getExtras());
+                pickerView();
+                break;
+            case MODE_ALBUM_DELETE://图片选择删除
+                preViewDelete(getIntent().getStringArrayListExtra(EXTRA_PREVIEW_LIST),getIntent().getIntExtra(EXTRA_PREVIEW_POSITION, 0));
+                break;
+            case MODE_ONLY_PREVIEW://仅仅预览
+                preViewOnly(getIntent().getStringArrayListExtra(EXTRA_PREVIEW_LIST),getIntent().getIntExtra(EXTRA_PREVIEW_POSITION, 0));
+                break;
+        }
     }
 
     private void initViews() {
@@ -88,18 +111,52 @@ public class AlbumPickerActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.frame_content, pickerFragment).commit();
     }
 
-    public void preView(ArrayList<String> imglist, ArrayList<String> selected, int position, boolean backStack) {
+    /**
+     * 相册选择
+     */
+    public void preViewAlbum(@NonNull ArrayList<String> imglist, ArrayList<String> selected, int position, boolean backStack) {
         AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("position", position);
-        bundle.putStringArrayList("imglist", imglist);
-        bundle.putStringArrayList("selected", selected);
+        bundle.putInt(KEY_PREVIEW_POSITION, position);
+        bundle.putStringArrayList(KEY_PREVIEW_IMAGELIST, imglist);
+        bundle.putStringArrayList(KEY_PREVIEW_SELECTED, selected);
+        bundle.putInt(EXTRA_PREVIEW_MODE,MODE_ALBUM_PREVIEW);
         int pickerModel = getIntent().getIntExtra(EXTRA_SELECT_MODE, SINGLE_SELECT_MODE);
+        bundle.putInt(EXTRA_SELECT_MODE, pickerModel);
         bundle.putInt(EXTRA_MAX_COUNT, getIntent().getIntExtra(EXTRA_MAX_COUNT, pickerModel == SINGLE_SELECT_MODE ? 1 : DEFAULT_MAX_COUNT));
         preViewFragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (backStack) fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.hide(pickerFragment).add(R.id.frame_content, preViewFragment, "preview").commit();
+        if (pickerFragment != null) fragmentTransaction.hide(pickerFragment);
+        fragmentTransaction.add(R.id.frame_content, preViewFragment, "preview").commit();
+    }
+
+    /**
+     * 图片编辑删除
+     */
+    public void preViewDelete(@NonNull ArrayList<String> imglist,int position){
+        AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_PREVIEW_POSITION, position);
+        bundle.putStringArrayList(KEY_PREVIEW_IMAGELIST, imglist);
+        bundle.putInt(EXTRA_PREVIEW_MODE,MODE_ALBUM_DELETE);
+        preViewFragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame_content, preViewFragment, "preview").commit();
+    }
+
+    /**
+     * 图片预览
+     */
+    public void preViewOnly(@NonNull ArrayList<String> imglist,int position){
+        AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_PREVIEW_POSITION, position);
+        bundle.putStringArrayList(KEY_PREVIEW_IMAGELIST, imglist);
+        bundle.putInt(EXTRA_PREVIEW_MODE,MODE_ONLY_PREVIEW);
+        preViewFragment.setArguments(bundle);
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(R.id.frame_content, preViewFragment, "preview").commit();
     }
 
     public void refreshSelected(ArrayList<String> selectPath) {
@@ -119,4 +176,12 @@ public class AlbumPickerActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getFragments().size()>0 && fragmentManager.getFragments().get(0) instanceof AlbumPreViewFragment){
+            ((AlbumPreViewFragment)fragmentManager.getFragments().get(0)).onBackPressed();
+        }else{
+            super.onBackPressed();
+        }
+    }
 }

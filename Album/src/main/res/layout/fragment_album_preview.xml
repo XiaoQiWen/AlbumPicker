@@ -12,6 +12,7 @@
         android:id="@+id/rel_top"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@drawable/album_shape_shadow"
         >
         <ImageButton
             android:id="@+id/btn_back"
@@ -42,7 +43,7 @@
             android:paddingRight="15dp"
             android:text="@string/album_str_complete"
             android:enabled="false"
-            android:textColor="@color/album_btn_textcolor_e" />
+            android:textColor="@color/album_selector_text_color" />
     </RelativeLayout>
 
     <RelativeLayout
