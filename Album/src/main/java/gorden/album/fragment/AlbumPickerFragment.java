@@ -283,14 +283,14 @@ public class AlbumPickerFragment extends Fragment implements View.OnClickListene
         for (Picture picture : pictures) {
             pathList.add(picture.path);
         }
-        ((AlbumPickerActivity) getActivity()).preViewAlbum(pathList, selectPath, position, true);
+        ((AlbumPickerActivity) getActivity()).preViewAlbum(pathList, selectPath, position);
     }
 
     /**
      * 预览图片 当前选择的
      */
     public void preViewImage() {
-        ((AlbumPickerActivity) getActivity()).preViewAlbum(selectPath, selectPath, 0, true);
+        ((AlbumPickerActivity) getActivity()).preViewAlbum(selectPath, selectPath, 0);
     }
 
     public int appWidth() {

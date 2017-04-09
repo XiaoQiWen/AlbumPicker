@@ -2,6 +2,8 @@ package gorden.album.demo;
 
 import android.app.Application;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import gorden.album.demo.util.CrashHandler;
 
 /**
@@ -14,9 +16,9 @@ public class BaseApp extends Application {
         super.onCreate();
         CrashHandler.getInstance().init(this, true);
 
-//        if (!LeakCanary.isInAnalyzerProcess(this)) {
+        if (!LeakCanary.isInAnalyzerProcess(this)) {
 //            LeakCanary.install(this);
-//        }
+        }
 
     }
 

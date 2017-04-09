@@ -20,6 +20,7 @@ import me.xiaopan.sketch.SketchImageView;
 import me.xiaopan.sketch.display.TransitionImageDisplayer;
 import me.xiaopan.sketch.drawable.SketchDrawable;
 import me.xiaopan.sketch.process.GaussianBlurImageProcessor;
+import me.xiaopan.sketch.request.DisplayOptions;
 import me.xiaopan.sketch.state.DrawableStateImage;
 import me.xiaopan.sketch.state.OldStateImage;
 import me.xiaopan.sketch.util.SketchUtils;
@@ -60,19 +61,19 @@ public class AlbumPickerActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        int previewMode = getIntent().getIntExtra(EXTRA_PREVIEW_MODE,MODE_ALBUM_PREVIEW);
+        int previewMode = getIntent().getIntExtra(EXTRA_PREVIEW_MODE, MODE_ALBUM_PREVIEW);
 
-        switch (previewMode){
+        switch (previewMode) {
             case MODE_ALBUM_PREVIEW://相册
                 pickerFragment = new AlbumPickerFragment();
                 pickerFragment.setArguments(getIntent().getExtras());
                 pickerView();
                 break;
             case MODE_ALBUM_DELETE://图片选择删除
-                preViewDelete(getIntent().getStringArrayListExtra(EXTRA_PREVIEW_LIST),getIntent().getIntExtra(EXTRA_PREVIEW_POSITION, 0));
+                preViewDelete(getIntent().getStringArrayListExtra(EXTRA_PREVIEW_LIST), getIntent().getIntExtra(EXTRA_PREVIEW_POSITION, 0));
                 break;
             case MODE_ONLY_PREVIEW://仅仅预览
-                preViewOnly(getIntent().getStringArrayListExtra(EXTRA_PREVIEW_LIST),getIntent().getIntExtra(EXTRA_PREVIEW_POSITION, 0));
+                preViewOnly(getIntent().getStringArrayListExtra(EXTRA_PREVIEW_LIST), getIntent().getIntExtra(EXTRA_PREVIEW_POSITION, 0));
                 break;
         }
     }
@@ -114,32 +115,33 @@ public class AlbumPickerActivity extends AppCompatActivity {
     /**
      * 相册选择
      */
-    public void preViewAlbum(@NonNull ArrayList<String> imglist, ArrayList<String> selected, int position, boolean backStack) {
+    public void preViewAlbum(@NonNull ArrayList<String> imglist, ArrayList<String> selected, int position) {
         AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_PREVIEW_POSITION, position);
         bundle.putStringArrayList(KEY_PREVIEW_IMAGELIST, imglist);
         bundle.putStringArrayList(KEY_PREVIEW_SELECTED, selected);
-        bundle.putInt(EXTRA_PREVIEW_MODE,MODE_ALBUM_PREVIEW);
+        bundle.putInt(EXTRA_PREVIEW_MODE, MODE_ALBUM_PREVIEW);
         int pickerModel = getIntent().getIntExtra(EXTRA_SELECT_MODE, SINGLE_SELECT_MODE);
         bundle.putInt(EXTRA_SELECT_MODE, pickerModel);
         bundle.putInt(EXTRA_MAX_COUNT, getIntent().getIntExtra(EXTRA_MAX_COUNT, pickerModel == SINGLE_SELECT_MODE ? 1 : DEFAULT_MAX_COUNT));
         preViewFragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if (backStack) fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.addToBackStack(null);
         if (pickerFragment != null) fragmentTransaction.hide(pickerFragment);
+        fragmentManager.popBackStack();
         fragmentTransaction.add(R.id.frame_content, preViewFragment, "preview").commit();
     }
 
     /**
      * 图片编辑删除
      */
-    public void preViewDelete(@NonNull ArrayList<String> imglist,int position){
+    public void preViewDelete(@NonNull ArrayList<String> imglist, int position) {
         AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_PREVIEW_POSITION, position);
         bundle.putStringArrayList(KEY_PREVIEW_IMAGELIST, imglist);
-        bundle.putInt(EXTRA_PREVIEW_MODE,MODE_ALBUM_DELETE);
+        bundle.putInt(EXTRA_PREVIEW_MODE, MODE_ALBUM_DELETE);
         preViewFragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frame_content, preViewFragment, "preview").commit();
@@ -148,12 +150,12 @@ public class AlbumPickerActivity extends AppCompatActivity {
     /**
      * 图片预览
      */
-    public void preViewOnly(@NonNull ArrayList<String> imglist,int position){
+    public void preViewOnly(@NonNull ArrayList<String> imglist, int position) {
         AlbumPreViewFragment preViewFragment = new AlbumPreViewFragment();
         Bundle bundle = new Bundle();
         bundle.putInt(KEY_PREVIEW_POSITION, position);
         bundle.putStringArrayList(KEY_PREVIEW_IMAGELIST, imglist);
-        bundle.putInt(EXTRA_PREVIEW_MODE,MODE_ONLY_PREVIEW);
+        bundle.putInt(EXTRA_PREVIEW_MODE, MODE_ONLY_PREVIEW);
         preViewFragment.setArguments(bundle);
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.add(R.id.frame_content, preViewFragment, "preview").commit();
@@ -178,9 +180,9 @@ public class AlbumPickerActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (fragmentManager.getFragments().size()>0 && fragmentManager.getFragments().get(0) instanceof AlbumPreViewFragment){
-            ((AlbumPreViewFragment)fragmentManager.getFragments().get(0)).onBackPressed();
-        }else{
+        if (fragmentManager.getFragments().size() > 0 && fragmentManager.getFragments().get(0) instanceof AlbumPreViewFragment) {
+            ((AlbumPreViewFragment) fragmentManager.getFragments().get(0)).onBackPressed();
+        } else {
             super.onBackPressed();
         }
     }
