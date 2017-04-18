@@ -7,6 +7,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -132,7 +133,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     private boolean isEffective(Picture picture) {
-        return new File(picture.path).isFile() && picture.size > 0;//&& picture.width > 0
+        return !TextUtils.isEmpty(picture.path)&&new File(picture.path).isFile() && picture.size > 0;//&& picture.width > 0
     }
 
     /**
