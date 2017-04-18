@@ -92,7 +92,10 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
                 picture.mimeType = imageMimeType;
                 picture.width = imageWidth;
                 picture.height = imageHeight;
-                if (!isEffective(picture)) continue;
+                if (!isEffective(picture)){
+                    Log.e("XXXXXXXXXXXXXX","无效图片:"+picture.path +" widht "+picture.width+"    "+picture.size);
+                    continue;
+                }
 
                 allPictures.add(picture);
                 //根据父路径分类存放图片
@@ -132,7 +135,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     private boolean isEffective(Picture picture) {
-        return new File(picture.path).isFile() && picture.size > 0 && picture.width > 0;
+        return new File(picture.path).isFile() && picture.size > 0;//&& picture.width > 0
     }
 
     /**
