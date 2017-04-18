@@ -55,7 +55,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * 扫描图片
      */
-    public void scan(OnPicturesLoadedListener loadedListener,boolean showGif) {
+    public void scan(OnPicturesLoadedListener loadedListener, boolean showGif) {
         this.loadedListener = loadedListener;
         this.showGif = showGif;
         LoaderManager loaderManager = mContext.getSupportLoaderManager();
@@ -64,7 +64,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(mContext, EXTERNAL_CONTENT_URI, IMAGE_PROJECTION,showGif?null: MIME_TYPE + "!=?",showGif?null:new String[]{"image/gif"}, IMAGE_PROJECTION[7] + " DESC");
+        return new CursorLoader(mContext, EXTERNAL_CONTENT_URI, IMAGE_PROJECTION, showGif ? null : MIME_TYPE + "!=?", showGif ? null : new String[]{"image/gif"}, IMAGE_PROJECTION[7] + " DESC");
     }
 
     @Override
@@ -92,10 +92,7 @@ public class PictureScanner implements LoaderManager.LoaderCallbacks<Cursor> {
                 picture.mimeType = imageMimeType;
                 picture.width = imageWidth;
                 picture.height = imageHeight;
-                if (!isEffective(picture)){
-                    Log.e("XXXXXXXXXXXXXX","无效图片:"+picture.path +" widht "+picture.width+"    "+picture.size);
-                    continue;
-                }
+                if (!isEffective(picture)) continue;
 
                 allPictures.add(picture);
                 //根据父路径分类存放图片
